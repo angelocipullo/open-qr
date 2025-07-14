@@ -1,0 +1,19 @@
+{
+  "name": "open-qr",
+  "version": "1.0.0",
+  "description": "Simple QR code generator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "qrcode": "^1.5.4"
+  },
+  "author": "",
+  "license": "ISC"
+}
