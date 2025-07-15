@@ -9,7 +9,11 @@
     "dev:frontend": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
     "deploy": "cd frontend && npm run build && cd .. && node server.js",
-    "clean-build": "rm -rf public/dist && cd frontend && npm run build && cd .. && node server.js"
+    "clean-build": "rm -rf public/dist && cd frontend && npm run build && cd .. && node server.js",
+    "docker:build": "docker build -t open-qr .",
+    "docker:run": "docker run -p 3000:3000 open-qr",
+    "docker:compose": "docker-compose up --build",
+    "caprover:deploy": "caprover deploy"
   },
   "dependencies": {
     "cors": "^2.8.5",
