@@ -10,3 +10,5 @@ README.md
 docker-compose.yml
 .env
 .env.local
+.npmrc
+frontend/.npmrc

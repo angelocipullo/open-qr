@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 # Impostazione della directory di lavoro principale
 WORKDIR /app
@@ -7,15 +7,12 @@ WORKDIR /app
 COPY package*.json ./
 COPY frontend/package*.json ./frontend/
 
-# Installazione delle dipendenze del backend
-RUN npm ci
-
-# Installazione delle dipendenze del frontend
-WORKDIR /app/frontend
-RUN npm ci
-
-# Torna alla directory principale
-WORKDIR /app
+# Installazione delle dipendenze del backend e frontend in una sola operazione
+# Utilizziamo --no-package-lock per evitare problemi con package-lock
+RUN npm install --no-package-lock && \
+    cd frontend && \
+    npm install --no-package-lock && \
+    cd ..
 
 # Copia di tutti i file del progetto
 COPY . .
@@ -28,20 +25,27 @@ RUN npm run build
 WORKDIR /app
 
 # Stage 2: Configurazione del backend
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Impostazione della directory di lavoro
 WORKDIR /app
 
-# Copia dei file package.json e package-lock.json del backend
-COPY package*.json ./
+# Copia dei file package.json del backend
+COPY package.json ./
 
-# Installazione delle dipendenze di produzione
-RUN npm ci --only=production
+# Installazione delle dipendenze di produzione e wget per healthcheck
+RUN apk add --no-cache wget && \
+    npm install --omit=dev --no-package-lock && \
+    npm cache clean --force
 
 # Copia del server e della cartella public dalla fase di build
 COPY --from=builder /app/server.js ./
 COPY --from=builder /app/public ./public
+
+# Crea un utente non root per una maggiore sicurezza
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN chown -R appuser:appgroup /app
+USER appuser
 
 # Esposizione della porta
 EXPOSE 3000
