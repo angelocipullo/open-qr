@@ -45,6 +45,6 @@ app.get('*', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server attivo sulla porta ${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server attivo su 0.0.0.0:${port}`);
 });
