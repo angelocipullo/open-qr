@@ -31,7 +31,7 @@ function App() {
     setIsGenerating(true)
 
     try {
-      const response = await fetch('http://localhost:3000/generate', {
+      const response = await fetch('/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,10 +127,10 @@ function App() {
         {/* Header */}
         <header className="app-header">
           <div className="container">
-            <div className="logo">
+            <a href="/" className="logo" aria-label="Home">
               <QrCode size={28} />
               <span className="logo-text">{t('header.logo')}</span>
-            </div>
+            </a>
 
             <nav className="main-nav">
               <ul>
@@ -309,10 +309,10 @@ function App() {
       <footer className="footer">
         <div className="container">
           <div className="footer-content">
-            <div className="footer-logo">
+            <a href="/" className="footer-logo" aria-label="Home">
               <QrCode size={24} />
               <span className="logo-text">{t('footer.logo')}</span>
-            </div>
+            </a>
 
             <div className="footer-links">
               <div className="footer-column">
