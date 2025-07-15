@@ -70,16 +70,18 @@ npm run docker:compose  # Costruisce ed esegue con docker-compose
 1. Accedi alla dashboard di CapRover e crea una nuova applicazione (es. "open-qr")
 2. Esegui il comando `caprover login` per connetterti al tuo server
 3. Configura l'applicazione con `caprover setup`
-4. Deploy dell'applicazione:
+4. Deploy dell'applicazione utilizzando l'archivio tar (metodo consigliato):
 
 ```bash
 npm run caprover:deploy
 ```
 
-Oppure manualmente:
+Questo comando creerà un archivio tar con tutti i file necessari ed eseguirà il deploy sul tuo server CapRover.
+
+Nota: Se incontri problemi, puoi sempre utilizzare l'interfaccia web di CapRover per caricare manualmente l'archivio tar generato da:
 
 ```bash
-caprover deploy -a nome-app
+tar -czf ./deploy.tar.gz --exclude='node_modules' --exclude='.git' --exclude='frontend/node_modules' --exclude='frontend/dist' .
 ```
 
 ### Variabili d'ambiente

@@ -1,19 +1,31 @@
-FROM node:18-alpine AS frontend-builder
+FROM node:18-alpine AS builder
 
-# Impostazione della directory di lavoro
-WORKDIR /app/frontend
+# Impostazione della directory di lavoro principale
+WORKDIR /app
 
-# Copia dei file package.json e package-lock.json
-COPY ./frontend/package*.json ./
+# Copia dei file package.json del progetto principale e del frontend
+COPY package*.json ./
+COPY frontend/package*.json ./frontend/
 
-# Installazione delle dipendenze
+# Installazione delle dipendenze del backend
 RUN npm ci
 
-# Copia dei file del frontend
-COPY ./frontend/ ./
+# Installazione delle dipendenze del frontend
+WORKDIR /app/frontend
+RUN npm ci
+
+# Torna alla directory principale
+WORKDIR /app
+
+# Copia di tutti i file del progetto
+COPY . .
 
 # Build del frontend
+WORKDIR /app/frontend
 RUN npm run build
+
+# Torna alla directory principale
+WORKDIR /app
 
 # Stage 2: Configurazione del backend
 FROM node:18-alpine
@@ -27,12 +39,9 @@ COPY package*.json ./
 # Installazione delle dipendenze di produzione
 RUN npm ci --only=production
 
-# Copia dei file del backend
-COPY ./server.js ./
-COPY ./public ./public
-
-# Copia della build del frontend dalla fase precedente
-COPY --from=frontend-builder /app/frontend/dist /app/public/dist
+# Copia del server e della cartella public dalla fase di build
+COPY --from=builder /app/server.js ./
+COPY --from=builder /app/public ./public
 
 # Esposizione della porta
 EXPOSE 3000

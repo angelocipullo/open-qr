@@ -13,7 +13,7 @@
     "docker:build": "docker build -t open-qr .",
     "docker:run": "docker run -p 3000:3000 open-qr",
     "docker:compose": "docker-compose up --build",
-    "caprover:deploy": "caprover deploy"
+    "caprover:deploy": "tar -czf ./deploy.tar.gz --exclude='node_modules' --exclude='.git' --exclude='frontend/node_modules' --exclude='frontend/dist' . && caprover deploy -t ./deploy.tar.gz"
   },
   "dependencies": {
     "cors": "^2.8.5",
