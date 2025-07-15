@@ -12,6 +12,7 @@ import TestimonialsSection from './components/TestimonialsSection'
 import FaqSection from './components/FaqSection'
 import CtaSection from './components/CtaSection'
 import LanguageSwitcher from './components/LanguageSwitcher'
+import SeoHead from './components/SeoHead'
 
 function App() {
   const { t } = useTranslation()
@@ -111,6 +112,7 @@ function App() {
 
   return (
     <>
+      <SeoHead />
       <div className="app">
         <Toaster
           position="top-right"

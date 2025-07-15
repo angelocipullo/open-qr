@@ -227,5 +227,15 @@ export default {
       }
     },
     "copyright": "© 2025 SimpleQR. Tutti i diritti riservati. Creato con ❤️ e React in Italia."
+  },
+  seo: {
+    title: "Il #1 generatore di QR Codes online | SimpleQR",
+    description: "Create free QR Codes in seconds. Generate, download and share your QR Codes in SVG and PNG format without registration. Online service, secure and unlimited.",
+    ogTitle: "SimpleQR - Generate Free QR Code in Seconds",
+    ogDescription: "Transform any URL into a professional QR Code. Download in SVG or PNG without registration. Completely free and unlimited.",
+    twitterTitle: "SimpleQR - Free QR Code | Online Generator",
+    twitterDescription: "Create custom QR Codes for your links. Instant generation, download in SVG and PNG without registration.",
+    schemaName: "SimpleQR - Online QR Code Generator",
+    schemaDescription: "Free service to create high-quality QR Codes in SVG and PNG format. Simple, fast and unlimited."
   }
 }
