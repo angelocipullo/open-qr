@@ -2,16 +2,19 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { QrCode, Download, Link, Sparkles, Zap, Globe, Image, Check, HelpCircle, Star, Users, ArrowRight, Smartphone, ShoppingBag, Menu, Coffee, Award, Shield, Clock } from 'lucide-react'
 import { Toaster, toast } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import QRCodeLib from 'qrcode'
 import './App.css'
-import FeaturesSection from './components/FeaturesSection';
-import HowItWorksSection from './components/HowItWorksSection';
-import UseCasesSection from './components/UseCasesSection';
-import TestimonialsSection from './components/TestimonialsSection';
-import FaqSection from './components/FaqSection';
-import CtaSection from './components/CtaSection';
+import FeaturesSection from './components/FeaturesSection'
+import HowItWorksSection from './components/HowItWorksSection'
+import UseCasesSection from './components/UseCasesSection'
+import TestimonialsSection from './components/TestimonialsSection'
+import FaqSection from './components/FaqSection'
+import CtaSection from './components/CtaSection'
+import LanguageSwitcher from './components/LanguageSwitcher'
 
 function App() {
+  const { t } = useTranslation()
   const [url, setUrl] = useState('')
   const [qrCode, setQrCode] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
@@ -21,7 +24,7 @@ function App() {
     e.preventDefault()
 
     if (!url.trim()) {
-      toast.error('Inserisci un URL valido!')
+      toast.error(t('hero.form.invalidUrl'))
       return
     }
 
@@ -37,13 +40,13 @@ function App() {
       })
 
       if (!response.ok) {
-        throw new Error('Errore nella generazione del QR code')
+        throw new Error(t('hero.form.generationError'))
       }
 
       const svgText = await response.text()
       setQrCode(svgText)
       setShowQr(true)
-      toast.success('QR Code generato con successo!')
+      toast.success(t('hero.form.successMessage'))
     } catch (error) {
       toast.error('Errore: ' + error.message)
     } finally {
@@ -63,7 +66,7 @@ function App() {
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-    toast.success('QR Code scaricato!')
+    toast.success(t('hero.form.downloadedSvg'))
   }
 
   const downloadPNG = async () => {
@@ -94,9 +97,9 @@ function App() {
       a.click()
       document.body.removeChild(a)
 
-      toast.success('QR Code PNG scaricato!')
+      toast.success(t('hero.form.downloadedPng'))
     } catch (error) {
-      toast.error('Errore durante il download del PNG: ' + error.message)
+      toast.error(t('hero.form.downloadError') + error.message)
     }
   }
 
@@ -126,17 +129,19 @@ function App() {
           <div className="container">
             <div className="logo">
               <QrCode size={28} />
-              <span className="logo-text">SimpleQR</span>
+              <span className="logo-text">{t('header.logo')}</span>
             </div>
 
             <nav className="main-nav">
               <ul>
-                <li><a href="#features">Funzionalità</a></li>
-                <li><a href="#how-it-works">Come Funziona</a></li>
-                <li><a href="#use-cases">Casi d'Uso</a></li>
-                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#features">{t('header.nav.features')}</a></li>
+                <li><a href="#how-it-works">{t('header.nav.howItWorks')}</a></li>
+                <li><a href="#use-cases">{t('header.nav.useCases')}</a></li>
+                <li><a href="#faq">{t('header.nav.faq')}</a></li>
               </ul>
             </nav>
+
+            <LanguageSwitcher />
           </div>
         </header>
 
@@ -157,31 +162,30 @@ function App() {
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <h1 className="hero-title">
-                  Genera QR Code
-                  <span className="gradient-text"> Istantaneamente</span>
+                  {t('hero.title')}
+                  <span className="gradient-text"> {t('hero.titleHighlight')}</span>
                 </h1>
 
                 <p className="hero-subtitle">
-                  Trasforma qualsiasi URL in un QR code professionale in secondi.
-                  Gratuito, veloce, senza limiti e senza registrazione.
+                  {t('hero.subtitle')}
                 </p>
 
                 <div className="features">
                   <div className="feature">
                     <Zap size={18} />
-                    <span>Generazione istantanea</span>
+                    <span>{t('hero.features.instant')}</span>
                   </div>
                   <div className="feature">
                     <Download size={18} />
-                    <span>Download SVG & PNG</span>
+                    <span>{t('hero.features.download')}</span>
                   </div>
                   <div className="feature">
                     <Globe size={18} />
-                    <span>Qualsiasi URL</span>
+                    <span>{t('hero.features.anyUrl')}</span>
                   </div>
                   <div className="feature">
                     <Shield size={18} />
-                    <span>Sicuro e privato</span>
+                    <span>{t('hero.features.secure')}</span>
                   </div>
                 </div>
               </motion.div>
@@ -212,7 +216,7 @@ function App() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <Download size={16} />
-                          Scarica SVG
+                          {t('hero.form.downloadSvg')}
                         </motion.button>
 
                         <motion.button
@@ -222,7 +226,7 @@ function App() {
                           whileTap={{ scale: 0.95 }}
                         >
                           <Image size={16} />
-                          Scarica PNG
+                          {t('hero.form.downloadPng')}
                         </motion.button>
 
                         <motion.button
@@ -231,12 +235,12 @@ function App() {
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          Nuovo QR Code
+                          {t('hero.form.newQrCode')}
                         </motion.button>
                       </div>
 
                       <div className="url-preview">
-                        <span className="url-label">URL:</span>
+                        <span className="url-label">{t('hero.form.urlLabel')}</span>
                         <span className="url-text">{url}</span>
                       </div>
                     </div>
@@ -258,7 +262,7 @@ function App() {
                       type="url"
                       value={url}
                       onChange={(e) => setUrl(e.target.value)}
-                      placeholder="https://example.com"
+                      placeholder={t('hero.form.placeholder')}
                       className="url-input"
                       disabled={isGenerating}
                     />
@@ -276,7 +280,7 @@ function App() {
                     ) : (
                       <>
                         <QrCode size={20} />
-                        Genera QR Code
+                        {t('hero.form.generateButton')}
                       </>
                     )}
                   </motion.button>
@@ -307,51 +311,51 @@ function App() {
           <div className="footer-content">
             <div className="footer-logo">
               <QrCode size={24} />
-              <span className="logo-text">SimpleQR</span>
+              <span className="logo-text">{t('footer.logo')}</span>
             </div>
 
             <div className="footer-links">
               <div className="footer-column">
-                <h4>Prodotto</h4>
+                <h4>{t('footer.sections.product.title')}</h4>
                 <ul>
-                  <li><a href="#features">Funzionalità</a></li>
-                  <li><a href="#how-it-works">Come Funziona</a></li>
-                  <li><a href="#use-cases">Casi d'Uso</a></li>
-                  <li><a href="#faq">FAQ</a></li>
+                  <li><a href="#features">{t('footer.sections.product.features')}</a></li>
+                  <li><a href="#how-it-works">{t('footer.sections.product.howItWorks')}</a></li>
+                  <li><a href="#use-cases">{t('footer.sections.product.useCases')}</a></li>
+                  <li><a href="#faq">{t('footer.sections.product.faq')}</a></li>
                 </ul>
               </div>
 
               <div className="footer-column">
-                <h4>Risorse</h4>
+                <h4>{t('footer.sections.resources.title')}</h4>
                 <ul>
-                  <li><a href="#">Blog</a></li>
-                  <li><a href="#">Guida ai QR Code</a></li>
-                  <li><a href="#">Best Practices</a></li>
-                  <li><a href="#">API (Coming Soon)</a></li>
+                  <li><a href="#">{t('footer.sections.resources.blog')}</a></li>
+                  <li><a href="#">{t('footer.sections.resources.guide')}</a></li>
+                  <li><a href="#">{t('footer.sections.resources.bestPractices')}</a></li>
+                  <li><a href="#">{t('footer.sections.resources.api')}</a></li>
                 </ul>
               </div>
 
               <div className="footer-column">
-                <h4>Azienda</h4>
+                <h4>{t('footer.sections.company.title')}</h4>
                 <ul>
-                  <li><a href="#">Chi Siamo</a></li>
-                  <li><a href="#">Contatti</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
-                  <li><a href="#">Termini di Servizio</a></li>
+                  <li><a href="#">{t('footer.sections.company.about')}</a></li>
+                  <li><a href="#">{t('footer.sections.company.contact')}</a></li>
+                  <li><a href="#">{t('footer.sections.company.privacy')}</a></li>
+                  <li><a href="#">{t('footer.sections.company.terms')}</a></li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <p>© 2025 SimpleQR. Tutti i diritti riservati. Creato con ❤️ e React in Italia.</p>
+            <p>{t('footer.copyright')}</p>
             <div className="seo-keywords">
-              <span>Generatore QR Code</span>
-              <span>QR Code Gratis</span>
-              <span>QR Code SVG</span>
-              <span>QR Code PNG</span>
-              <span>QR Code Senza Registrazione</span>
-              <span>Creazione QR Code Online</span>
+              <span>{t('footer.seoKeywords.generator')}</span>
+              <span>{t('footer.seoKeywords.free')}</span>
+              <span>{t('footer.seoKeywords.svg')}</span>
+              <span>{t('footer.seoKeywords.png')}</span>
+              <span>{t('footer.seoKeywords.noRegistration')}</span>
+              <span>{t('footer.seoKeywords.online')}</span>
             </div>
           </div>
         </div>

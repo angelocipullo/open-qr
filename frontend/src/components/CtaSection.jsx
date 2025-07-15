@@ -1,21 +1,26 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
-const CtaSection = () => (
-  <section className="section cta-section">
-    <div className="container">
-      <motion.div
-        className="cta-card"
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="cta-title">Pronto a Creare il Tuo QR Code?</h2>
-        <p className="cta-text">Inizia subito a generare QR code professionali gratuitamente e senza registrazione.</p>
-        <a href="#top" className="cta-button">Genera QR Code Ora</a>
-      </motion.div>
-    </div>
-  </section>
-);
+const CtaSection = () => {
+  const { t } = useTranslation();
+  
+  return (
+    <section className="section cta-section">
+      <div className="container">
+        <motion.div
+          className="cta-card"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="cta-title">{t('cta.title')}</h2>
+          <p className="cta-text">{t('cta.text')}</p>
+          <a href="#top" className="cta-button">{t('cta.button')}</a>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 export default CtaSection;
