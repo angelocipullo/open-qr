@@ -89,6 +89,21 @@ tar -czf ./deploy.tar.gz --exclude='node_modules' --exclude='.git' --exclude='fr
 - `PORT`: La porta su cui il server ascolterà (default: 3000)
 - `NODE_ENV`: L'ambiente di esecuzione (development/production)
 
+### Risoluzione problemi comuni
+
+Se incontri l'errore 502 Bad Gateway quando accedi all'applicazione in CapRover:
+
+1. Verifica che la porta configurata nell'applicazione CapRover corrisponda a quella esposta nel Dockerfile (3000)
+2. Controlla i log del container per errori
+3. Verifica che l'applicazione sia in ascolto su tutti gli indirizzi (0.0.0.0) e non solo su localhost
+4. Controlla l'endpoint di health dell'applicazione visitando `/health`
+5. Assicurati che le variabili d'ambiente siano configurate correttamente in CapRover
+
+Se l'applicazione è attiva ma restituisce una pagina bianca o errori 404:
+1. Verifica che i file statici del frontend siano stati correttamente copiati in `/app/public/dist`
+2. Controlla i percorsi base in `vite.config.js`
+3. Verifica che il server Express sia configurato per servire correttamente il file index.html
+
 ## Licenza
 
 ISC

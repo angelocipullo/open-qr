@@ -48,7 +48,7 @@ EXPOSE 3000
 
 # Controllo di salute
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-  CMD wget -O- http://localhost:3000/ || exit 1
+  CMD wget -O- http://localhost:3000/health || exit 1
 
 # Avvio dell'applicazione
 CMD ["node", "server.js"]

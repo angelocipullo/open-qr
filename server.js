@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const QRCode = require('qrcode');
 const cors = require('cors');
@@ -8,11 +9,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Middleware di logging per il debug
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
 // Servi i file statici dell'applicazione React dalla build
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
 // Servi le altre risorse statiche che non sono nella build
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
+
+// Endpoint per il controllo di salute
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        uptime: process.uptime(),
+        timestamp: Date.now()
+    });
+});
 
 // API endpoint per generare QR code
 app.post('/generate', async (req, res) => {
